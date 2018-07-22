@@ -13,6 +13,7 @@ function updateBadgeMail(){
 			withCredentials: true
 		},
 		success: function (data) {
+			if(isNaN(data)) document.location.href = document.location.href;
 			if(data==0) data = null;
 			$(".button-mail").attr('data-badge', data);
 		},
