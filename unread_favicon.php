@@ -5,12 +5,9 @@
 			$rcmail = rcmail::get_instance();
 			$this->register_task('mail_counter');
 			$this->register_action('getunseen', array($this, 'getunseen'));
-			if ($rcmail->task == 'mail') {
-				$this->include_script('favico-0.3.10.min.js');
-				$this->include_script('unread_favicon.js');
-			}else{
-				$this->include_script('unread_badge.js');
-			}
+			if ($rcmail->task == 'mail') $this->include_script('unread_favicon.js');
+			else $this->include_script('unread_badge.js');
+			$this->include_stylesheet('unread_favicon.css');
 		}
 		function getunseen(){
 			$rcmail = rcmail::get_instance();

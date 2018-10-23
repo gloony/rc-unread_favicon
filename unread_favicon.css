@@ -1,0 +1,9 @@
+@media screen and (min-width: 481px){
+	#taskmenu .button.mail[data-badge]:after {
+		margin-left:-5.2em;
+		margin-top:2em;
+		position:absolute;
+		font-size:.7em;
+		content:" [" attr(data-badge) "]";
+		font-size:.7em;
+		color:#37beff}}
