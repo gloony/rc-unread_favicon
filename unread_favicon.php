@@ -3,13 +3,19 @@
 		public $task = '?(?!login|logout).*';
 		function init(){
 			$rcmail = rcmail::get_instance();
-			$this->register_task('mail_counter');
 			$this->register_action('getunseen', array($this, 'getunseen'));
-			if ($rcmail->task == 'mail') $this->include_script('unread_favicon.js');
-			else $this->include_script('unread_badge.js');
+			if ($rcmail->task == 'mail'){
+				$this->include_script('favico.js');
+				$this->include_script('unread_favicon.js');
+			}
+			else
+			{
+				$this->add_hook('refresh', array($this, 'refresh'));
+				$this->include_script('unread_badge.js');
+			}
 			$this->include_stylesheet('unread_favicon.css');
 		}
-		function getunseen(){
+		function refresh(){
 			$rcmail = rcmail::get_instance();
 			$prefs = unserialize($rcmail->user->data['preferences']);
 			$result = 0;
@@ -24,8 +30,7 @@
 				}
 			}
 			imap_close($mbox);
-			echo $result;
-			exit;
+			$rcmail->output->command('plugin.unread_favicon_refresh', array('unread' => $result));
 		}
 		private function endsWith($haystack, $needle){
 			$length = strlen($needle);

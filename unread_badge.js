@@ -1,40 +1,25 @@
-$(document).ready(function() {
-	if($(".button.mail").length){
-		window.setInterval(updateBadgeMail, 60000);
-		updateBadgeMail();
-	}
-});
-var lastMailsCount = null;
-function updateBadgeMail(){
-	$.ajax({
-		type: "POST",
-		url: "/?_task=mail_counter&_action=getunseen",
-		data: "",
-		xhrFields: {
-			withCredentials: true
-		},
-		success: function (data) {
-			if(isNaN(data)) document.location.href = document.location.href;
-			if(data==0) data = null;
-			if(lastMailsCount!=data){
-				if(localStorage.rcmail_unreads===undefined) localStorage.setItem('rcmail_unreads', 0);
-				lastMailsCount = data;
-				$(".button.mail").attr('data-badge', data);
-				if(localStorage.rcmail_unreads<data){
-					localStorage.setItem('rcmail_unreads', data);
-					var title = 'gMail';
-					var icon = 'https://public.gloony.me/gloony/ico/gMail.png';
-					var body = 'You have ' + data;
-					if(data>1) body += ' unread mails';
-					else body += ' unread mail';
-					if(Notification.permission === "granted"){
-						var notification = new Notification(title, { icon: icon, body: body });
-						notification.onclick = function(){ window.focus(); this.close(); };
-					}else Notification.requestPermission();
-				}else if(localStorage.rcmail_unreads>data){
-					localStorage.setItem('rcmail_unreads', data);
-				}
-			}
-		},
-	});
+var unread_favicon_lastunread = null;
+function unread_favicon_badge(data){
+  if(data==0) data = null;
+  if(unread_favicon_lastunread!=data){
+    unread_favicon_lastunread = data;
+    if($(".button-mail").length) $(".button-mail").attr('data-badge', data);
+    if(localStorage.getItem('unread_favicon.unread.counter')===undefined) localStorage.setItem('unread_favicon.unread.counter', 0);
+    if(localStorage.getItem('unread_favicon.unread.counter')<data){
+      localStorage.setItem('unread_favicon.unread.counter', data);
+      var title = 'Mail';
+      var icon = 'skins/elastic/images/logo.png';
+      var body = 'You have ' + data;
+      if(data>1) body += ' unread mails';
+      else body += ' unread mail';
+      if(Notification.permission === "granted"){
+        var notification = new Notification(title, { icon: icon, body: body });
+        notification.onclick = function(){ window.document.location.href = './?_task=mail'; window.focus(); this.close(); };
+      }else Notification.requestPermission();
+    }else if(localStorage.getItem('unread_favicon.unread.counter')>data){
+      localStorage.setItem('unread_favicon.unread.counter', data);
+    }
+  }
 }
+
+rcmail.addEventListener('plugin.unread_favicon_refresh', function(evt){ unread_favicon_badge(evt.unread); });
