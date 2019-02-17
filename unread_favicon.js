@@ -1,9 +1,7 @@
 $(document).ready(function(){
 	faviconMail = new Favico({animation:'fade',bgColor:'#37beff'});
-	if($(".button.mail").length){
 		window.setInterval(updateBadgeMail, 4000);
 		window.setTimeout(updateBadgeMail, 2000);
-	}
 	$('.button.mail').on('click', function(e){
 		e.stopImmediatePropagation();
 		e.stopPropagation();

@@ -3,7 +3,7 @@ function unread_favicon_badge(data){
   if(data==0) data = null;
   if(unread_favicon_lastunread!=data){
     unread_favicon_lastunread = data;
-    if($(".button-mail").length) $(".button-mail").attr('data-badge', data);
+    if($(".button.mail").length) $(".button.mail").attr('data-badge', data);
     if(localStorage.getItem('unread_favicon.unread.counter')===undefined) localStorage.setItem('unread_favicon.unread.counter', 0);
     if(localStorage.getItem('unread_favicon.unread.counter')<data){
       localStorage.setItem('unread_favicon.unread.counter', data);
